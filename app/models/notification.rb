@@ -8,10 +8,10 @@ class Notification < ActiveRecord::Base
   has_many :receipts, :dependent => :destroy
 
   scope :recipient, lambda { |recipient|
-    joins(:receipts).where('receipts.receiver_id' => recipient.id,'receipts.receiver_type' => recipient.class.to_s)
+    joins(:receipts).where('receipts.receiver_id' => recipient.id,'receipts.receiver_type' => recipient.class.base_class.to_s)
   }
   scope :with_object, lambda { |obj|
-    where('notified_object_id' => obj.id,'notified_object_type' => obj.class.to_s)
+    where('notified_object_id' => obj.id,'notified_object_type' => obj.class.base_class.to_s)
   }
   scope :not_trashed, lambda {
     joins(:receipts).where('receipts.trashed' => false)
